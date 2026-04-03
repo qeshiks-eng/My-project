@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Infrastructure & Secrets
+.env
+*.pem
+*.key
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# PCAP & Logs (Никогда не пушим дампы трафика в паблик!)
+*.pcap
+*.pcapng
+*.log
+eve.json
+
+# IDE
+.idea/
+.vscode/
