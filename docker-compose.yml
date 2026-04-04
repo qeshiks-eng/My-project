@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # 🎯 1. Узел жертвы (Target)
+  victim:
+    image: ubuntu:22.04
+    container_name: soc_ubuntu_victim
+    command: tail -f /dev/null
+    networks:
+      l2_range:
+        ipv4_address: 192.168.137.10
+
+  # 🪓 2. Узел атакующего (Red Team)
+  attacker:
+    image: kalilinux/kali-rolling
+    container_name: great_kali_attacker
+    command: tail -f /dev/null
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ./red_team:/opt/red_team
+    networks:
+      l2_range:
+        ipv4_address: 192.168.137.20
+
+  # 🔍 3. Сенсор обнаружения вторжений (Blue Team)
+  ids_sensor:
+    image: jasonish/suricata:latest
+    container_name: blue_suricata
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: "host"
+    volumes:
+      - ./logs:/var/log/suricata
+      - ./blue_team/icmp_covert.rules:/etc/suricata/rules/icmp_covert.rules
+
+# 🌐 Определение нашей изолированной L2-сети
+networks:
+  l2_range:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.137.0/24
