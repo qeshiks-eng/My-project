@@ -24,3 +24,25 @@ MY-PROJECT/
 ├── 🛡️ blue_team/      # Defensive Configuration & Hardening
 ├── 🔍 ir_team/        # Digital Forensics & Incident Response (DFIR)
 └── 🐳 docker-compose  # IaC Provisioning
+
+## 🗺️ Development Roadmap (Purple Team Ecosystem)
+
+This monorepo is actively developed. The architecture is designed to scale across three major enterprise security domains.
+
+### 🟢 Phase 1: Network Layer (L2/L3) Exploitation & DFIR (Completed)
+- [x] Rogue DHCP, ARP Poisoning, and DNS Spoofing frameworks (`Scapy`).
+- [x] L3 Covert Channels (ICMP Exfiltration with XOR & Base64).
+- [x] Automated PCAP parsing and DFIR orchestration.
+- [x] Threat Intelligence API enrichment (AbuseIPDB).
+
+### 🟡 Phase 2: Enterprise Hardening & IaC (In Progress)
+- [ ] **Infrastructure as Code:** Provisioning isolated environments using `Terraform` & `EVE-NG`.
+- [ ] **Configuration Management:** Cross-platform Hardening (Windows GPO, Linux auditd) via `Ansible`.
+- [ ] **Secrets Management:** Deploying `HashiCorp Vault` for dynamic secrets and AES key rotation.
+- [ ] **Zero Trust:** Implementing Microsegmentation and mTLS in containerized environments.
+
+### 🔴 Phase 3: Advanced Threat Simulation & Cryptography (Planned)
+- [ ] **Ransomware Simulation:** Custom AES/ChaCha20 encryption modules.
+- [ ] **Malware Analysis:** Reverse engineering weak cryptography (PRNG cracking, padding oracles).
+- [ ] **Detection Engineering:** Advanced `YARA` and `Suricata` signature development.
+- [ ] **CI/CD Integration:** Implementing SAST (`Bandit`, `TruffleHog`) in GitLab pipelines.
