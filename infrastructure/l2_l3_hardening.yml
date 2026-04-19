@@ -1,0 +1,35 @@
+---
+- name: Enterprise L3 Hardening (OSPF & HSRP)
+  hosts: routers
+  gather_facts: false
+  tasks:
+    - name: Secure Interface Ethernet0/0 (OSPF Key & HSRP Auth)
+      cisco.ios.ios_config:
+        lines:
+          - ip ospf message-digest-key 1 md5 cisco123
+          - standby 1 authentication md5 key-string hsrp_sec
+        parents: interface Ethernet0/0
+
+    - name: Enforce OSPF Authentication for Area 0
+      cisco.ios.ios_config:
+        lines:
+          - area 0 authentication message-digest
+        parents: router ospf 1
+
+- name: Enterprise L2 Hardening (VLAN Hopping Protection)
+  hosts: switches
+  gather_facts: false
+  tasks:
+    - name: Secure User Ports (Move away from VLAN 1 & Disable DTP)
+      cisco.ios.ios_config:
+        lines:
+          - switchport mode access
+          - switchport access vlan 10
+          - switchport nonegotiate
+        parents: interface range Ethernet0/1 - 3
+
+    - name: Disable Unused Ports (Physical Security)
+      cisco.ios.ios_config:
+        lines:
+          - shutdown
+        parents: interface range Ethernet0/4 - 7

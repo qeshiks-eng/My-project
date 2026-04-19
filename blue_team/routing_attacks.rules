@@ -1,0 +1,1 @@
+alert udp any any -> 224.0.0.2 1985 (msg:"SOC ALERT: HSRP Hijacking Attempt (Priority 255)"; content:"|ff|"; offset:5; depth:1; sid:1000001; rev:1;)
