@@ -12,7 +12,7 @@ venv/
 *.tfstate.backup
 .terraform/
 
-# PCAP & Logs (Никогда не пушим дампы трафика в паблик!)
+# PCAP & Logs
 *.pcap
 *.pcapng
 *.log
