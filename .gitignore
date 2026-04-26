@@ -13,7 +13,6 @@ venv/
 .terraform/
 
 # PCAP & Logs
-*.pcap
 *.pcapng
 *.log
 eve.json
