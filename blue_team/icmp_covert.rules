@@ -1,0 +1,7 @@
+# 🛡️ Suricata Rule: L3 Covert Channel (ICMP Exfiltration) Detection
+# Выявляет аномальные ICMP Echo Request пакеты с большим Payload'ом и признаками Base64/XOR.
+
+alert icmp any any -> any any (msg:"SOC ALERT: Suspicious ICMP Data Exfiltration (Large Base64 Payload)"; itype:8; dsize:>100; pcre:"/[A-Za-z0-9+\/]{50,}={0,2}/"; classtype:network-anomaly; sid:1000002; rev:1;)
+
+# Опциональное правило: Детектирование нашего конкретного эксплойта icmp_exfil.py по кастомному ID (1337)
+alert icmp any any -> any any (msg:"SOC ALERT: Known APT Covert Channel (ID 1337)"; itype:8; icmp_id:1337; classtype:bad-unknown; sid:1000003; rev:1;)
