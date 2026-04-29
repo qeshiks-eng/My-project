@@ -1,0 +1,1 @@
+alert tcp any any -> any 443 (msg:"SOC ALERT: Reverse Shell Detected (root uid) on allowed port"; flow:established,from_server; content:"uid=0(root)"; classtype:command-and-control; sid:1000005; rev:1;)

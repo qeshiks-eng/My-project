@@ -1,0 +1,31 @@
+- name: Enterprise Egress Filtering (Anti-Reverse Shell) 
+  hosts: victim_servers 
+  become: yes 
+  tasks: 
+    - name: Allow Outbound Loopback traffic (Internal Services) 
+      ansible.builtin.iptables: 
+        chain: OUTPUT 
+        out_interface: lo 
+        jump: ACCEPT 
+
+    - name: Allow Outbound DNS (UDP 53) 
+      ansible.builtin.iptables: 
+        chain: OUTPUT 
+        protocol: udp 
+        destination_port: "53" 
+        jump: ACCEPT 
+
+    - name: Allow Outbound HTTP/HTTPS (TCP 80, 443) 
+      ansible.builtin.iptables: 
+        chain: OUTPUT 
+        protocol: tcp 
+        destination_port: "{{ item }}" 
+        jump: ACCEPT 
+      loop: 
+        - "80" 
+        - "443" 
+
+    - name: Set Default Egress Policy to DROP (Zero Trust) 
+      ansible.builtin.iptables: 
+        chain: OUTPUT 
+        policy: DROP
