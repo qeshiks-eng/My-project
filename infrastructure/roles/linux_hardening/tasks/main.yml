@@ -1,0 +1,116 @@
+---
+- name: Система управления секретными агентами, Apache2 и аудит
+  hosts: all
+  become: yes
+
+  tasks:
+    # 1. УПРАВЛЕНИЕ ГРУППАМИ И ПОЛЬЗОВАТЕЛЯМИ
+    - name: Create required groups
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - default_users
+        - secret_users
+
+    - name: Create default user
+      ansible.builtin.user:
+        name: user
+        groups: default_users
+        append: yes
+
+    - name: Create secret staff users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        groups: secret_users
+        append: yes
+      loop:
+        - secret_agent
+        - secret_spy
+        - secret_boss
+
+    # 2. НАСТРОЙКА ПРАВ ДОСТУПА (DAC)
+    - name: Set 770 permissions for secret users' homes
+      ansible.builtin.file:
+        path: "/home/{{ item }}"
+        state: directory
+        mode: '0770'
+        owner: "{{ item }}"
+        group: secret_users
+      loop:
+        - secret_agent
+        - secret_spy
+        - secret_boss
+
+    - name: Set dangerous permissions for /var (Educational only!)
+      ansible.builtin.file:
+        path: /var
+        state: directory
+        mode: '0777'
+
+    # 3. УСТАНОВКА APACHE2 (Требование ТЗ)
+    - name: Install Apache2
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Check Apache2 status
+      ansible.builtin.command: systemctl status apache2
+      register: apache_status
+      changed_when: false
+
+    - name: Print Apache2 status to console
+      ansible.builtin.debug:
+        var: apache_status.stdout_lines
+
+    # 4. НАСТРОЙКА SUDOERS
+    - name: Allow default_users to use sudo without password
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%default_users'
+        line: '%default_users ALL=(ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+
+    # 5. HARDENING SSH
+    - name: Disable SSH Password Authentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      notify: restart sshd
+
+    # 6. СЕТЕВОЙ ЭКРАН (IPTABLES)
+    - name: DROP incoming TCP traffic on port 80
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: "80"
+        jump: DROP
+
+    # 7. НАСТРОЙКА AUDITD
+    - name: Install auditd package
+      ansible.builtin.apt:
+        name: auditd
+        state: present
+
+    - name: Copy auditd rules from file
+      ansible.builtin.copy:
+        src: files/audit.rules
+        dest: /etc/audit/rules.d/audit.rules
+        owner: root
+        group: root
+        mode: '0640'
+      notify: restart auditd
+
+  handlers:
+    - name: restart sshd
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+    - name: restart auditd
+      ansible.builtin.service:
+        name: auditd
+        state: restarted

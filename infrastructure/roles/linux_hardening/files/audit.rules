@@ -1,0 +1,19 @@
+# Удалить старые правила
+-D
+
+# Установить размер буфера (для высоконагруженных систем)
+-b 8192
+
+# 1. Мониторинг файлов (File Watches)
+# Логируем запись (w) и изменение атрибутов (a) для /etc/shadow
+-w /etc/shadow -p wa -k shadow_modification
+
+# Логируем изменения в sudoers
+-w /etc/sudoers -p wa -k sudoers_modification
+
+# Логируем любую активность в папках .ssh
+-w /root/.ssh/ -p wa -k ssh_key_injection
+
+# 2. Мониторинг системных вызовов (Syscalls)
+# Логируем смену прав (chmod/fchmodat) для пользователей (auid >= 1000)
+-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=-1 -k perm_modification
