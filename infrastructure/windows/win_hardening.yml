@@ -1,0 +1,95 @@
+---
+- name: Enterprise Windows Hardening (Compliance-as-Code)
+  hosts: windows
+  gather_facts: no
+  
+  tasks:
+    # -------------------------------------------------------------
+    # 1. НАСТРОЙКА БРАНДМАУЭРА (FIREWALL)
+    # -------------------------------------------------------------
+    - name: Configure Windows Firewall Rules (Block HTTP/FTP/Ping, Allow RDP)
+      community.windows.win_firewall_rule:
+        name: "{{ item.name }}"
+        direction: "{{ item.dir }}"
+        action: "{{ item.action }}"
+        protocol: "{{ item.proto }}"
+        localport: "{{ item.lport | default(omit) }}"
+        remoteport: "{{ item.rport | default(omit) }}"
+        enabled: yes
+      loop:
+        - { name: 'Block_http_conn', dir: 'in', action: 'block', proto: 'tcp', lport: '80' }
+        - { name: 'Block_ftp_conn', dir: 'out', action: 'block', proto: 'tcp', rport: '21' }
+        - { name: 'Block_ping_conn', dir: 'in', action: 'block', proto: 'icmpv4' }
+        - { name: 'Allow_rdp_conn', dir: 'in', action: 'allow', proto: 'tcp', lport: '3389' }
+
+    # -------------------------------------------------------------
+    # 2. УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ И ПРАВАМИ (USER RIGHTS)
+    # -------------------------------------------------------------
+    - name: Ensure Guest account exists and is enabled
+      ansible.windows.win_user:
+        name: Guest
+        state: present
+        account_disabled: no
+
+    - name: Restrict network and interactive logon for Guest
+      ansible.windows.win_user_right:
+        name: "{{ item }}"
+        users: Guest
+        action: add
+      loop:
+        - SeDenyNetworkLogonRight
+        - SeDenyInteractiveLogonRight
+
+    - name: Grant SeBackupPrivilege to Administrators
+      ansible.windows.win_user_right:
+        name: SeBackupPrivilege
+        users: Administrators
+        action: add
+
+    - name: Remove SeRemoteShutdownPrivilege from all users
+      ansible.windows.win_user_right:
+        name: SeRemoteShutdownPrivilege
+        users: []
+        action: set
+
+    - name: Deny Remote Interactive Logon for Administrators
+      ansible.windows.win_user_right:
+        name: SeDenyRemoteInteractiveLogonRight
+        users: Administrators
+        action: add
+
+    # -------------------------------------------------------------
+    # 3. НАСТРОЙКА BITLOCKER (ОБХОД TPM В РЕЕСТРЕ)
+    # -------------------------------------------------------------
+    - name: Allow BitLocker without TPM (GPO Registry Bypass)
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\FVE
+        name: "{{ item.key }}"
+        data: "{{ item.value }}"
+        type: dword
+      loop:
+        - { key: 'UseAdvancedStartup', value: 1 }
+        - { key: 'EnableBDEWithNoTPM', value: 1 }
+        - { key: 'UseTPM', value: 2 }
+        - { key: 'UseTPMPIN', value: 2 }
+        - { key: 'UseTPMKey', value: 2 }
+        - { key: 'UseTPMKeyPIN', value: 2 }
+
+    # -------------------------------------------------------------
+    # 4. ПОЛИТИКИ ПАРОЛЕЙ (ЧЕРЕЗ КОМАНДНУЮ СТРОКУ)
+    # -------------------------------------------------------------
+    - name: Set Password Policy (Length=8, Age=30)
+      ansible.windows.win_shell: |
+        net accounts /maxpwage:30 /minpwlen:8
+      # Подавляем статус changed, так как net accounts не идемпотентна
+      changed_when: false
+
+    # -------------------------------------------------------------
+    # 5. ADVANCED AUDIT POLICY (Detection Engineering)
+    # -------------------------------------------------------------
+    - name: Enable Advanced Audit Policy (Process Creation & Firewall)
+      ansible.windows.win_shell: |
+        auditpol /set /subcategory:"Process Creation" /success:enable /failure:enable
+        auditpol /set /subcategory:"MPSSVC Rule-Level Policy Change" /success:enable /failure:enable
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -Name "ProcessCreationIncludeCmdLine_Enabled" -Value 1 -Type DWord
+      changed_when: false
