@@ -1,79 +1,49 @@
-﻿# Cybersecurity Engineering Lab
+﻿# 🛡️ Cybersecurity Engineering Lab
 
-This repository contains my supplemental cybersecurity engineering practice focused on defensive security, detection engineering, incident response automation, infrastructure hardening, security automation, and controlled lab-based adversary emulation.
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![PowerShell](https://img.shields.io/badge/PowerShell-Lab%20Automation-blue)
+![Ansible](https://img.shields.io/badge/Ansible-Infrastructure%20Hardening-red)
+![Suricata](https://img.shields.io/badge/Suricata-Detection%20Engineering-orange)
+![Defensive Security](https://img.shields.io/badge/Focus-Defensive%20Security-green)
+![Lab Only](https://img.shields.io/badge/Scope-Isolated%20Lab-lightgrey)
 
-This is not a production toolkit and not an offensive toolkit.
+## Executive Summary
 
-The repository is intended to demonstrate practical learning progress, engineering discipline, security documentation, and safe public cybersecurity artifacts.
+Supplemental cybersecurity engineering lab focused on defensive security, detection engineering, incident response automation, infrastructure hardening, security automation, and controlled lab-based adversary emulation.
 
-## Focus areas
+This repository is not a production toolkit and not an offensive toolkit. Lab-only emulation materials are used to validate detections, understand telemetry, test parsers, and improve hardening logic in isolated environments.
 
-- Detection Engineering
+## Repository Navigation
+
+| Track | Directory | Description |
+|---|---|---|
+| 🟦 Detection Engineering | [`detection-engineering/`](detection-engineering/) | Suricata rules and detection logic |
+| 🟨 Incident Response Automation | [`incident-response-automation/`](incident-response-automation/) | Python parsers and SOC/DFIR automation scripts |
+| 🟩 Infrastructure Security | [`infrastructure-security/`](infrastructure-security/) | Linux, Windows, and network hardening practice |
+| 🟥 Controlled Lab Emulation | [`controlled-adversary-emulation/`](controlled-adversary-emulation/) | Lab-only telemetry and artifact simulation for defensive validation |
+| 🧪 Sample Data | [`sample-data/`](sample-data/) | Sanitized lab samples and public-safe test data |
+| 📚 Documentation | [`docs/`](docs/) | Portfolio overview and safety scope |
+
+## Key Documents
+
+- [`CHANGELOG.md`](CHANGELOG.md) — full repository development history
+- [`docs/portfolio_overview.md`](docs/portfolio_overview.md) — portfolio goals, target tracks, and evidence model
+- [`docs/safety_and_scope.md`](docs/safety_and_scope.md) — allowed scope, prohibited use, and artifact policy
+- [`controlled-adversary-emulation/docs/lab_scenarios.md`](controlled-adversary-emulation/docs/lab_scenarios.md) — explanation of lab-only emulation scripts
+
+## Current Learning Tracks
+
+- SOC / Detection Engineering
+- Security Automation
 - Incident Response Automation
 - Infrastructure Security
-- Network Security
-- DevSecOps / Security QA basics
-- Controlled Adversary Emulation for defensive validation
+- DevSecOps / AppSec / Security QA basics
 
-## Repository structure
+## Safety Notice
 
-### detection-engineering/
+All experiments are intended only for isolated lab networks, local virtual machines, owned systems, synthetic datasets, and sanitized sample data.
 
-Detection logic and rules for lab-generated network and host-based scenarios.
-
-### incident-response-automation/
-
-Python scripts for parsing logs, PCAP files, Windows EVTX, Linux audit artifacts, SSH events, DHCP/HSRP traffic, and other investigation data.
-
-### infrastructure-security/
-
-Infrastructure hardening and secure configuration practice.
-
-Current contents include Linux hardening, Windows hardening, network hardening notes, SSH configuration templates, and audit rules.
-
-### controlled-adversary-emulation/
-
-Lab-only artifact and traffic simulation scripts used to validate defensive controls, detection rules, and incident-response automation.
-
-These scripts are intended only for isolated lab environments.
-
-### sample-data/
-
-Sanitized lab samples and public-safe test data.
-
-## Safety model
-
-Allowed:
-
-- isolated lab networks
-- local virtual machines
-- owned systems
-- intentionally created test data
-- sanitized public artifacts
-- detection validation
-- incident-response automation
-- infrastructure hardening practice
-
-Not allowed:
-
-- unauthorized access
-- third-party targeting
-- credential theft
-- persistence on real systems
-- evasion against production environments
-- publishing secrets
-- publishing private keys
-- publishing real intercepted data
-
-## Current positioning
-
-This repository supports my growth toward:
-
-- Junior Security Engineer
-- SOC Analyst
-- Security Automation Engineer
-- Junior DevSecOps Engineer
-- Application Security / Security QA trainee
+This repository must not contain real credentials, private keys, production logs, real intercepted traffic, personal data, or unauthorized access tooling.
 
 ## Author
 
