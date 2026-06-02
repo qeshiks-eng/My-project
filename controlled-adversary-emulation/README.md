@@ -1,5 +1,4 @@
-@'
-# Controlled Adversary Emulation
+﻿# Controlled Adversary Emulation
 
 This section contains lab-only adversary-emulation scenarios used to validate defensive controls, detection rules, and incident-response automation.
 

@@ -1,5 +1,4 @@
-@'
-# Safety and Scope
+﻿# Safety and Scope
 
 This repository is a defensive cybersecurity engineering lab.
 

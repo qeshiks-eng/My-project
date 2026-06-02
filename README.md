@@ -1,5 +1,4 @@
-@'
-# Cybersecurity Engineering Lab
+﻿# Cybersecurity Engineering Lab
 
 This repository contains my supplemental cybersecurity engineering practice focused on defensive security, detection engineering, incident response automation, infrastructure hardening, security automation, and controlled lab-based adversary emulation.
 

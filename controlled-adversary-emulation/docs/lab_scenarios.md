@@ -1,5 +1,4 @@
-@'
-# Lab Scenario Index
+﻿# Lab Scenario Index
 
 This document explains the purpose of each lab-only adversary-emulation script.
 

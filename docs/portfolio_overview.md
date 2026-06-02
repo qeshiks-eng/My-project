@@ -1,5 +1,4 @@
-@'
-# Portfolio Overview
+﻿# Portfolio Overview
 
 ## Purpose
 
