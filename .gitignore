@@ -1,22 +1,59 @@
+@'
 # Python
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
+*.pyd
 .venv/
 venv/
+env/
 
-# Infrastructure & Secrets
+# Logs and runtime artifacts
+*.log
+*.tmp
+*.bak
+*.old
+reports/
+output/
+outputs/
+
+# Environment and secrets
 .env
+.env.*
+!.env.example
+
+# Private keys and sensitive key material
 *.pem
 *.key
-*.tfstate
-*.tfstate.backup
-.terraform/
+*.p12
+*.pfx
+*.jks
+id_rsa
+id_ed25519
+*private*
+*secret*
 
-# PCAP & Logs
+# Keep only explicit examples
+!*.example
+!*.example.*
+!configs/examples/*
+
+# Packet captures
+# Public repo should keep only reviewed lab samples.
+*.pcap
 *.pcapng
-*.log
-eve.json
+!sample-data/**/*.pcap
+!sample-data/**/*.pcapng
 
-# IDE
-.idea/
+# OS / IDE
+.DS_Store
+Thumbs.db
 .vscode/
+.idea/
+
+# Archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
