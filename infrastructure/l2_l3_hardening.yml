@@ -1,4 +1,4 @@
----
+﻿---
 - name: Enterprise L3 Hardening (OSPF & HSRP)
   hosts: routers
   gather_facts: false
@@ -7,7 +7,7 @@
       cisco.ios.ios_config:
         lines:
           - ip ospf message-digest-key 1 md5 cisco123
-          - standby 1 authentication md5 key-string hsrp_sec
+          - standby 1 authentication md5 key-string <REDACTED_LAB_HSRP_KEY>
         parents: interface Ethernet0/0
 
     - name: Enforce OSPF Authentication for Area 0

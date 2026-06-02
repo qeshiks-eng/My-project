@@ -1,9 +1,10 @@
-#!/usr/bin/env python3 
-
+﻿#!/usr/bin/env python3
+import os
 from scapy.all import rdpcap, HSRP, Ether 
 import sys 
 
-def analyze_hsrp_pcap(pcap_file, expected_password="hsrp_sec"): 
+def analyze_hsrp_pcap(pcap_file, expected_password=None):
+    expected_password = expected_password or os.getenv("LAB_HSRP_EXPECTED_AUTH", "<LAB_EXPECTED_AUTH>") 
     print(f"[*] Запуск DFIR-анализа HSRP для дампа: {pcap_file}") 
     try: 
         packets = rdpcap(pcap_file) 
