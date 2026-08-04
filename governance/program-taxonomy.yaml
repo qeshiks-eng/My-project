@@ -1,0 +1,162 @@
+api_version: ecp/v12
+kind: ProgramTaxonomy
+metadata:
+  id: ECP-TAXONOMY-V12
+  status: MIGRATION_CANDIDATE
+  date: 2026-08-04
+
+projects:
+  - id: P00
+    name: Старт программы, инженерный метод и evidence discipline
+    type: core
+  - id: P01
+    name: Пакетный анализ и сетевой baseline
+    type: core
+  - id: P02
+    name: DNS, DHCP, routing, NTP и SSH
+    type: core
+  - id: P03
+    name: Сегментация, VLAN, policy и failover
+    type: core
+  - id: P04
+    name: Network telemetry, IDS, NSM и evidence handling
+    type: core
+  - id: P05
+    name: Linux hardening и host security
+    type: core
+  - id: P06
+    name: Windows Security, DFIR и timeline
+    type: core
+  - id: P07
+    name: Криптографические примитивы и misuse
+    type: core
+  - id: P08
+    name: Защита данных и key lifecycle
+    type: core
+  - id: P09
+    name: Подписи, public-key trust и PQC
+    type: core
+  - id: P10
+    name: PKI, TLS, mTLS и workload identity
+    type: core
+  - id: P11
+    name: Asset inventory, telemetry и data platform
+    type: core
+  - id: P12
+    name: Controlled adversary operations
+    type: core
+  - id: P13
+    name: Detection engineering и threat hunting
+    type: core
+  - id: P14
+    name: Enterprise network security architecture
+    type: core
+  - id: P15
+    name: DevSecOps, IaC и software supply chain
+    type: core
+  - id: P16
+    name: Enterprise Identity и Active Directory
+    type: core
+  - id: P17
+    name: Kubernetes и GitOps security common core
+    type: core
+  - id: P18
+    name: Integration capstone, resilience и assurance
+    type: capstone
+  - id: P19
+    name: Threat research, malware analysis и reverse engineering
+    type: specialization
+  - id: P20
+    name: Cloud-Native Security и Platform Security
+    type: specialization
+
+roles:
+  - id: R01
+    name: Governance, Risk and Compliance
+  - id: R02
+    name: Security Architecture
+  - id: R03
+    name: Network Security
+  - id: R04
+    name: Platform and Systems Security
+  - id: R05
+    name: Endpoint Security
+  - id: R06
+    name: Application Security
+  - id: R07
+    name: Cloud and Container Security
+  - id: R08
+    name: Identity Security
+  - id: R09
+    name: Data Security and Cryptography
+  - id: R10
+    name: Vulnerability Management
+  - id: R11
+    name: Threat Modeling
+  - id: R12
+    name: Threat Intelligence
+  - id: R13
+    name: Adversary Emulation and Red Team
+  - id: R14
+    name: Detection Engineering
+  - id: R15
+    name: SOC and Monitoring
+  - id: R16
+    name: Incident Response
+  - id: R17
+    name: Digital Forensics and Incident Response
+  - id: R18
+    name: Threat Hunting
+  - id: R19
+    name: Malware and Payload Analysis
+  - id: R20
+    name: QA and Security QA
+  - id: R21
+    name: DevSecOps and Supply Chain Security
+  - id: R22
+    name: Security Automation
+  - id: R23
+    name: Telemetry and Data Engineering
+  - id: R24
+    name: Resilience and Recovery
+  - id: R25
+    name: Documentation and Knowledge Engineering
+  - id: R26
+    name: Program and Portfolio Engineering
+
+role_model:
+  role:
+    definition: Профессиональная функция внутри проекта.
+  role_module:
+    definition: Полная учебно-инженерная реализация роли в P00-P20.
+    required_elements:
+      - competencies
+      - theory
+      - practice
+      - tools
+      - inputs
+      - actions
+      - artifacts
+      - tests
+      - evidence
+      - handoff
+  career_profile:
+    definition: Перевод доказанных результатов роли в язык вакансий, резюме, портфолио и собеседований.
+  responsibilities:
+    note: Evidence owner, reviewer, approver, recovery owner и handoff owner являются типами ответственности, а не отдельными карьерными ролями.
+
+coverage_policy:
+  p00_p18:
+    all_roles_reviewed: true
+    overview_only_forbidden: true
+    applicable_role_requires_real_contribution: true
+    exceptional_na_requires_rationale: true
+    independent_pass_required: true
+  p19_p20:
+    specialized_role_set_allowed: true
+
+project_gate_statuses:
+  - PASS
+  - FAIL
+  - BLOCKED
+  - NEEDS_REVIEW
