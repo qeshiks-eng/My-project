@@ -1,0 +1,122 @@
+api_version: ecp/v12
+kind: SecurityScenario
+metadata:
+  project_id: P00
+  scenario_id: p00-web-01-run-a
+  phase: run-a
+  description: Confirm the original restricted-path exposure and collect evidence.
+  owner: human-operator
+
+scope:
+  inventory: projects/p00/inventory.yaml
+  allowed_hosts: [analyst01, web01]
+  allowed_networks: [10.10.10.0/24]
+  allowed_services: [ssh, http, nginx, systemd, journald]
+  allowed_accounts: [lab-user, nginx-service]
+  allowed_techniques: [controlled-http-request, configuration-observation, log-analysis]
+  prohibited_actions:
+    - external network access
+    - destructive host changes
+    - credential collection
+    - persistence
+  external_targets: prohibited
+  emergency_stop:
+    method: stop workflow and disconnect LAB network
+    owner: human-operator
+
+variables:
+  target: web01
+  normal_url: http://10.10.10.20/
+  restricted_url: http://10.10.10.20/internal-check
+  request_count: 5
+  observation_window_seconds: 60
+
+workflow:
+  - id: delivery-baseline
+    orchestrator: delivery
+    action: verify-deployed-baseline
+    on_failure: stop
+    approval_required: false
+    timeout_seconds: 300
+
+  - id: defense-baseline
+    orchestrator: defense
+    action: verify-original-policy-and-telemetry
+    depends_on: [delivery-baseline]
+    on_failure: stop
+    approval_required: false
+    timeout_seconds: 300
+
+  - id: recovery-point
+    orchestrator: recovery
+    action: create-and-verify-recovery-point
+    depends_on: [defense-baseline]
+    on_failure: stop
+    approval_required: true
+    timeout_seconds: 600
+
+  - id: assurance-readiness
+    orchestrator: assurance
+    action: validate-run-a-readiness
+    depends_on: [recovery-point]
+    on_failure: stop
+    approval_required: false
+    timeout_seconds: 300
+
+  - id: attack-run-a
+    orchestrator: attack
+    action: execute-frozen-http-sequence
+    depends_on: [assurance-readiness]
+    inputs:
+      normal_url: http://10.10.10.20/
+      restricted_url: http://10.10.10.20/internal-check
+      request_count: 5
+    on_failure: needs-review
+    approval_required: true
+    timeout_seconds: 300
+
+  - id: investigation-run-a
+    orchestrator: investigation
+    action: collect-correlate-and-report
+    depends_on: [attack-run-a]
+    on_failure: needs-review
+    approval_required: false
+    timeout_seconds: 600
+
+  - id: assurance-run-a
+    orchestrator: assurance
+    action: record-original-result
+    depends_on: [investigation-run-a]
+    on_failure: needs-review
+    approval_required: false
+    timeout_seconds: 300
+
+  - id: cleanup-run-a
+    orchestrator: attack
+    action: cleanup-scenario-markers
+    depends_on: [assurance-run-a]
+    on_failure: needs-review
+    approval_required: false
+    timeout_seconds: 300
+
+evidence:
+  private_root: /private-evidence/p00/run-a
+  public_root: evidence/p00/run-a
+  hash_algorithm: sha256
+  utc_required: true
+  manifest_required: true
+
+acceptance:
+  evidence_complete: true
+  functional_tests_passed: true
+  security_tests_passed: false
+  regression_passed: false
+  restore_verified: true
+  scope_respected: true
+  run_comparison_required: false
+  human_review_required: true
+
+ai_advisory:
+  enabled: false
+  allowed_tasks: []
+  execution_authority: none
