@@ -1,0 +1,311 @@
+api_version: ecp/v12
+kind: ToolRegistry
+metadata:
+  status: MIGRATION_CANDIDATE
+  generated_from: 12_LIBRARY_SCHEMA_P00-P20_v11.0_RC3.7.0_P00_INTRODUCTORY.xlsx
+  source_sha256: 0949c3a07bcbe15acf723fd7fa04112038d9acd2703481838c0ad66858576702
+  normalized_at: '2026-08-04T00:00:00Z'
+  note: >-
+    This is a migration seed for P00 and the internal orchestration platform.
+    Full P01-P20 normalization requires the complete source workbook and does
+    not replace the original tool assignments.
+
+tools:
+  - tool_id: TOOL-GIT
+    canonical_name: Git
+    aliases: [git]
+    category: version-control
+    type: product
+    license: GPL-2.0-only
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: pin installed version and checksum before execution
+    official_manual: https://git-scm.com/docs
+    projects: [P00]
+    roles: [R21, R22, R25, R26]
+    orchestrators: [controller, delivery, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-UBUNTU-SERVER
+    canonical_name: Ubuntu Server
+    aliases: [Ubuntu]
+    category: operating-system
+    type: platform
+    license: mixed free-software packages
+    cost_model: free
+    availability: available in Russia and globally
+    version_policy: pin ISO/package snapshot and checksums before execution
+    official_manual: https://ubuntu.com/server/docs
+    projects: [P00]
+    roles: [R03, R04, R05, R08, R24]
+    orchestrators: [delivery, defense, investigation, recovery, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-NGINX-OSS
+    canonical_name: Nginx Open Source
+    aliases: [nginx]
+    category: web-service
+    type: product
+    license: BSD-2-Clause
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: pin package version and repository source before execution
+    official_manual: https://nginx.org/ru/docs/
+    projects: [P00]
+    roles: [R04, R06, R14, R15, R20]
+    orchestrators: [delivery, defense, attack, investigation, recovery, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-CURL
+    canonical_name: curl
+    aliases: [curl-cli]
+    category: http-client
+    type: product
+    license: curl license
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: record installed version in run manifest
+    official_manual: https://curl.se/docs/
+    projects: [P00]
+    roles: [R06, R13, R20, R22]
+    orchestrators: [attack, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-BASH
+    canonical_name: GNU Bash
+    aliases: [bash]
+    category: automation-shell
+    type: product
+    license: GPL-3.0-or-later
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: record shell version and strict-mode behavior
+    official_manual: https://www.gnu.org/software/bash/manual/
+    projects: [P00]
+    roles: [R14, R20, R22]
+    orchestrators: [delivery, defense, investigation, recovery, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-GNU-GREP
+    canonical_name: GNU grep
+    aliases: [grep]
+    category: text-processing
+    type: component
+    license: GPL-3.0-or-later
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: record installed version
+    official_manual: https://www.gnu.org/software/grep/manual/
+    projects: [P00]
+    roles: [R14, R15, R17, R18]
+    orchestrators: [investigation, assurance]
+    depth: WORKING
+    status: CATALOGUED
+
+  - tool_id: TOOL-GNU-AWK
+    canonical_name: GNU awk
+    aliases: [gawk, awk]
+    category: text-processing
+    type: component
+    license: GPL-3.0-or-later
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: record installed version
+    official_manual: https://www.gnu.org/software/gawk/manual/
+    projects: [P00]
+    roles: [R14, R17, R22, R23]
+    orchestrators: [investigation, assurance]
+    depth: WORKING
+    status: CATALOGUED
+
+  - tool_id: TOOL-SYSTEMD
+    canonical_name: systemd
+    aliases: [systemctl, journalctl]
+    category: service-and-log-management
+    type: product
+    components: [systemctl, journalctl]
+    license: LGPL-2.1-or-later and GPL components
+    cost_model: open-source
+    availability: included in Ubuntu Server
+    version_policy: pin through the operating-system package snapshot
+    official_manual: https://www.freedesktop.org/software/systemd/man/latest/
+    projects: [P00]
+    roles: [R04, R05, R15, R17, R24]
+    orchestrators: [delivery, defense, investigation, recovery, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-MERMAID
+    canonical_name: Mermaid
+    aliases: [mermaid-js]
+    category: architecture-documentation
+    type: product
+    license: MIT
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: pin renderer when generated output is part of evidence
+    official_manual: https://mermaid.js.org/
+    projects: [P00]
+    roles: [R02, R11, R25, R26]
+    orchestrators: []
+    depth: WORKING
+    status: CATALOGUED
+
+  - tool_id: TOOL-SHA256SUM
+    canonical_name: GNU sha256sum
+    aliases: [sha256sum]
+    category: integrity
+    type: component
+    license: GPL-3.0-or-later
+    cost_model: open-source
+    availability: included in GNU coreutils
+    version_policy: pin through the operating-system package snapshot
+    official_manual: https://www.gnu.org/software/coreutils/manual/html_node/sha2-utilities.html
+    projects: [P00]
+    roles: [R09, R17, R20, R24, R26]
+    orchestrators: [investigation, recovery, assurance]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-TAR
+    canonical_name: GNU tar
+    aliases: [tar]
+    category: archive-and-recovery
+    type: product
+    license: GPL-3.0-or-later
+    cost_model: open-source
+    availability: available in Russia and globally
+    version_policy: record installed version and archive options
+    official_manual: https://www.gnu.org/software/tar/manual/
+    projects: [P00]
+    roles: [R21, R24]
+    orchestrators: [delivery, recovery]
+    depth: WORKING
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-CONTROLLER
+    canonical_name: ECP Scenario Controller
+    aliases: [ecp]
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R22, R26]
+    orchestrators: [controller]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-CORE
+    canonical_name: ECP Orchestration Core
+    aliases: [orchestration-core]
+    category: internal-orchestration
+    type: internal-library
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R20, R22, R23, R26]
+    orchestrators: [core]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-DELIVERY
+    canonical_name: Delivery Orchestrator
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R21, R22]
+    orchestrators: [delivery]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-DEFENSE
+    canonical_name: Defense Orchestrator
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R03, R04, R05, R06, R08, R21]
+    orchestrators: [defense]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-ATTACK
+    canonical_name: Attack Orchestrator
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R11, R13]
+    orchestrators: [attack]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-INVESTIGATION
+    canonical_name: Investigation Orchestrator
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R15, R16, R17, R18, R23]
+    orchestrators: [investigation]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-RECOVERY
+    canonical_name: Recovery Orchestrator
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R16, R21, R24]
+    orchestrators: [recovery]
+    depth: CORE
+    status: CATALOGUED
+
+  - tool_id: TOOL-ECP-ASSURANCE
+    canonical_name: Assurance Orchestrator
+    category: internal-orchestration
+    type: internal-product
+    license: repository license
+    cost_model: free
+    availability: project source code
+    version_policy: semantic version plus commit SHA
+    official_manual: orchestration/README.md
+    projects: [P00]
+    roles: [R01, R02, R20, R26]
+    orchestrators: [assurance]
+    depth: CORE
+    status: CATALOGUED
