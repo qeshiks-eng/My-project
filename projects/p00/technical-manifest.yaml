@@ -1,0 +1,135 @@
+api_version: ecp/v12
+kind: ProjectTechnicalManifest
+metadata:
+  project_id: P00
+  title: Start, engineering method and evidence discipline
+  case_id: P00-WEB-01
+  status:
+    design: MIGRATION_CANDIDATE
+    implementation: NOT_STARTED
+    lab_validation: NOT_STARTED
+    assurance: NOT_EVALUATED
+
+capability:
+  name: Reproducible protected web-service incident cycle
+  expected_result: >-
+    Deploy, protect, test, investigate, remediate, retest and recover a bounded
+    Ubuntu/Nginx service while preserving traceable evidence.
+
+lab:
+  backend: vmware
+  network:
+    cidr: 10.10.10.0/24
+    isolated: true
+    external_connectivity: prohibited_during_execution
+  nodes:
+    - id: analyst01
+      address: 10.10.10.10
+      purpose: control, testing and investigation
+    - id: web01
+      address: 10.10.10.20
+      purpose: Ubuntu/Nginx target service
+
+scope:
+  allowed_hosts: [analyst01, web01]
+  allowed_networks: [10.10.10.0/24]
+  allowed_services: [ssh, http, nginx, systemd, journald]
+  external_targets: prohibited
+  prohibited_actions:
+    - access to third-party systems
+    - use of production data
+    - publication of raw private evidence
+    - arbitrary shell execution through orchestration contracts
+  emergency_stop:
+    method: stop scenario and disconnect isolated LAB network
+    owner: human-operator
+
+assets:
+  - id: A-P00-01
+    name: Nginx configuration
+  - id: A-P00-02
+    name: Static project page
+  - id: A-P00-03
+    name: Access and error logs
+  - id: A-P00-04
+    name: Detection script and fixtures
+  - id: A-P00-05
+    name: Evidence and recovery package
+
+threat_objective:
+  id: TH-P00-01
+  statement: A path intended to be restricted is accessible because of an incorrect access policy.
+
+control_objective:
+  id: CTRL-P00-01
+  statement: The restricted path is denied while normal service remains available and attempts remain observable.
+
+orchestration:
+  scenario_controller: required
+  core: required
+  orchestrators:
+    delivery: required
+    defense: required
+    attack: required
+    investigation: required
+    recovery: required
+    assurance: required
+
+runs:
+  run_a:
+    scenario: scenarios/p00/run-a.yaml
+    frozen_inputs:
+      source_profile: analyst01
+      target: web01
+      normal_path: /
+      restricted_path: /internal-check
+      request_count: 5
+      observation_window_seconds: 60
+    expected:
+      normal_status: 200
+      restricted_status: 200
+      detector_result: alert_or_finding
+  run_b:
+    scenario: scenarios/p00/run-b.yaml
+    comparable_to: run_a
+    expected:
+      normal_status: 200
+      restricted_status: 403
+      telemetry_present: true
+      detector_result: alert_or_finding
+
+recovery:
+  backup_required: true
+  integrity_check: sha256
+  restore_test_required: true
+  service_health_required: true
+  rto_measurement_required: true
+  rpo_measurement_required: true
+
+acceptance:
+  theory_first_pass_complete: true
+  targeted_theory_review_recorded: true
+  clean_clone_deploy_passed: true
+  scope_checks_passed: true
+  run_a_evidence_complete: true
+  root_cause_confirmed: true
+  remediation_deployed: true
+  run_b_comparable: true
+  regression_passed: true
+  restore_verified: true
+  role_artifacts_complete: true
+  public_package_sanitized: true
+  final_gate: PASS
+
+evidence:
+  private_root: /private-evidence/p00
+  public_root: evidence/p00
+  utc_required: true
+  manifest_required: true
+  hashes_required: true
+  required_reports:
+    - execution-report.md
+    - incident-report.md
+    - recovery-report.md
+    - assurance-report.md
+    - run-a-vs-run-b.md
