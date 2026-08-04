@@ -1,0 +1,123 @@
+api_version: ecp/v12
+kind: SecurityScenario
+metadata:
+  project_id: P00
+  scenario_id: p00-web-01-run-b
+  phase: run-b
+  description: Repeat the frozen request sequence after remediation and verify security, telemetry and regression.
+  owner: human-operator
+
+scope:
+  inventory: projects/p00/inventory.yaml
+  allowed_hosts: [analyst01, web01]
+  allowed_networks: [10.10.10.0/24]
+  allowed_services: [ssh, http, nginx, systemd, journald]
+  allowed_accounts: [lab-user, nginx-service]
+  allowed_techniques: [controlled-http-request, configuration-observation, log-analysis]
+  prohibited_actions:
+    - external network access
+    - destructive host changes
+    - credential collection
+    - persistence
+  external_targets: prohibited
+  emergency_stop:
+    method: stop workflow and disconnect LAB network
+    owner: human-operator
+
+variables:
+  target: web01
+  normal_url: http://10.10.10.20/
+  restricted_url: http://10.10.10.20/internal-check
+  request_count: 5
+  observation_window_seconds: 60
+  comparable_to: p00-web-01-run-a
+
+workflow:
+  - id: delivery-remediation
+    orchestrator: delivery
+    action: deploy-remediated-configuration
+    on_failure: rollback
+    approval_required: true
+    timeout_seconds: 300
+
+  - id: defense-remediation
+    orchestrator: defense
+    action: verify-remediated-policy-and-telemetry
+    depends_on: [delivery-remediation]
+    on_failure: rollback
+    approval_required: false
+    timeout_seconds: 300
+
+  - id: assurance-functional
+    orchestrator: assurance
+    action: validate-normal-service-and-comparability
+    depends_on: [defense-remediation]
+    on_failure: rollback
+    approval_required: false
+    timeout_seconds: 300
+
+  - id: attack-run-b
+    orchestrator: attack
+    action: execute-frozen-http-sequence
+    depends_on: [assurance-functional]
+    inputs:
+      normal_url: http://10.10.10.20/
+      restricted_url: http://10.10.10.20/internal-check
+      request_count: 5
+    on_failure: needs-review
+    approval_required: true
+    timeout_seconds: 300
+
+  - id: investigation-run-b
+    orchestrator: investigation
+    action: collect-correlate-and-compare
+    depends_on: [attack-run-b]
+    on_failure: needs-review
+    approval_required: false
+    timeout_seconds: 600
+
+  - id: recovery-restore-test
+    orchestrator: recovery
+    action: execute-restore-and-service-health-test
+    depends_on: [investigation-run-b]
+    on_failure: needs-review
+    approval_required: true
+    timeout_seconds: 900
+
+  - id: assurance-final
+    orchestrator: assurance
+    action: compare-runs-and-issue-gate
+    depends_on: [recovery-restore-test]
+    on_failure: needs-review
+    approval_required: false
+    timeout_seconds: 600
+
+  - id: cleanup-run-b
+    orchestrator: attack
+    action: cleanup-scenario-markers
+    depends_on: [assurance-final]
+    on_failure: needs-review
+    approval_required: false
+    timeout_seconds: 300
+
+evidence:
+  private_root: /private-evidence/p00/run-b
+  public_root: evidence/p00/run-b
+  hash_algorithm: sha256
+  utc_required: true
+  manifest_required: true
+
+acceptance:
+  evidence_complete: true
+  functional_tests_passed: true
+  security_tests_passed: true
+  regression_passed: true
+  restore_verified: true
+  scope_respected: true
+  run_comparison_required: true
+  human_review_required: true
+
+ai_advisory:
+  enabled: false
+  allowed_tasks: []
+  execution_authority: none
