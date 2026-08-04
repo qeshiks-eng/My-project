@@ -1,7 +1,7 @@
 $schema: https://json-schema.org/draft/2020-12/schema
 $id: https://example.invalid/ecp/v12/scenario.schema.yaml
 title: ECP Security Scenario
-$type: object
+type: object
 additionalProperties: false
 required:
   - api_version
