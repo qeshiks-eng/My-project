@@ -1,0 +1,59 @@
+api_version: ecp/v12
+kind: SourceAuthority
+metadata:
+  status: MIGRATION_IN_PROGRESS
+  date: 2026-08-04
+
+library_source:
+  file: 12_LIBRARY_SCHEMA_P00-P20_v11.0_RC3.7.0_P00_INTRODUCTORY.xlsx
+  sha256: 0949c3a07bcbe15acf723fd7fa04112038d9acd2703481838c0ad66858576702
+  policy: immutable_source_snapshot
+  note: >-
+    This file is the migration source snapshot. It is not silently overwritten
+    and remains available for rollback and row-level traceability.
+
+audits:
+  - file: 12_LIBRARY_AUDIT_RC3.7.0_P00_INTRODUCTORY_2026-08-04.json
+    type: structural
+    result: 100/100
+    interpretation: Structure and schema passed; this does not prove material sufficiency or LAB execution.
+
+  - file: 12_LIBRARY_AUDIT_RC3.7.0_P00_MAXIMAL_COVERAGE_2026-08-04.json
+    type: material-readiness
+    result: 69/100
+    verdict: STRUCTURE_READY_MATERIALS_INCOMPLETE
+    interpretation: P00 requires source, sequencing and determinism repairs before independent study.
+
+  - file: 12_LIBRARY_AUDIT_RC3.5.6_FULL_2026-08-04.xlsx
+    type: full-library
+    result: 74/100
+    verdict: BLOCKED_FOR_RELEASE
+    interpretation: Version truth, semantic mappings, duplicates and tool pins require correction.
+
+preserved_legacy_sources:
+  - file: P00_Введение_в_инженерную_кибербезопасность_v5.0_RC5.pdf
+    status: PRESERVED_REFERENCE
+    migration_target: P00-EXT-01
+    note: Deep configuration/symlink-tampering case; not merged into introductory P00.
+
+  - file: 12_LIBRARY_SCHEMA_P00-P20_v11.0_RC2.6_UNIVERSAL_R01-R26_100PLUS.xlsx
+    status: PRESERVED_REFERENCE
+    note: Design-coverage source. PASS_100PLUS does not represent completed study.
+
+repository_source:
+  repository: qeshiks-eng/My-project
+  baseline_branch: p00-execution
+  migration_branch: program-migration-v12
+  status: MIGRATING
+
+activation_policy:
+  target_version: v12.0
+  active_before_acceptance: false
+  requirements:
+    - source-preserving row-level migration
+    - P00 material gaps closed
+    - P00-P20 and R01-R26 preserved
+    - six-orchestrator architecture represented consistently
+    - administrative and learner layers separated
+    - formulas and links validated
+    - acceptance audit passed
