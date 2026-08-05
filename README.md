@@ -1,49 +1,111 @@
-﻿# 🛡️ Cybersecurity Engineering Lab
+﻿# Enterprise Cybersecurity Lab
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![PowerShell](https://img.shields.io/badge/PowerShell-Lab%20Automation-blue)
-![Ansible](https://img.shields.io/badge/Ansible-Infrastructure%20Hardening-red)
-![Suricata](https://img.shields.io/badge/Suricata-Detection%20Engineering-orange)
-![Defensive Security](https://img.shields.io/badge/Focus-Defensive%20Security-green)
-![Lab Only](https://img.shields.io/badge/Scope-Isolated%20Lab-lightgrey)
+![Lab Only](https://img.shields.io/badge/Scope-Isolated%20LAB-lightgrey)
+![Program](https://img.shields.io/badge/Program-P00--P20-blue)
+![Roles](https://img.shields.io/badge/Roles-R01--R26-blue)
+![Status](https://img.shields.io/badge/Status-Migration%20Candidate-yellow)
 
-## Executive Summary
+## Purpose
 
-Supplemental cybersecurity engineering lab focused on defensive security, detection engineering, incident response automation, infrastructure hardening, security automation, and controlled lab-based adversary emulation.
+This repository is the public-safe engineering workspace for the Enterprise Cybersecurity Program.
 
-This repository is not a production toolkit and not an offensive toolkit. Lab-only emulation materials are used to validate detections, understand telemetry, test parsers, and improve hardening logic in isolated environments.
+The program builds one evolving laboratory across P00–P20 and demonstrates how security capabilities are designed, delivered, defended, tested, attacked inside owned LAB scope, investigated, recovered and independently verified.
 
-## Repository Navigation
+This repository is not a production toolkit and not a toolkit for unauthorized activity.
 
-| Track | Directory | Description |
+## Program architecture
+
+```text
+P00–P20 projects
+      │
+      ├── R01–R26 role modules
+      │
+      ├── ECP Scenario Controller
+      │       └── Orchestration Core
+      │
+      ├── Delivery Orchestrator
+      ├── Defense Orchestrator
+      ├── Attack Orchestrator
+      ├── Investigation Orchestrator
+      ├── Recovery Orchestrator
+      └── Assurance Orchestrator
+              │
+              ▼
+      Domain modules, adapters and real tools
+              │
+              ▼
+          Isolated Enterprise LAB
+```
+
+## Learning method
+
+Each project uses a two-pass theory model:
+
+1. complete reading of the current project's primary literature and assigned ranges;
+2. targeted rereading of the relevant material and official documentation before each practical action.
+
+The engineering cycle is:
+
+`theory → design → baseline → Run A → investigation → remediation → comparable Run B → recovery → assurance → public-safe portfolio`
+
+Every practical action must retain a concrete external source.
+
+## Repository navigation
+
+| Area | Directory | Purpose |
 |---|---|---|
-| 🟦 Detection Engineering | [`detection-engineering/`](detection-engineering/) | Suricata rules and detection logic |
-| 🟨 Incident Response Automation | [`incident-response-automation/`](incident-response-automation/) | Python parsers and SOC/DFIR automation scripts |
-| 🟩 Infrastructure Security | [`infrastructure-security/`](infrastructure-security/) | Linux, Windows, and network hardening practice |
-| 🟥 Controlled Lab Emulation | [`controlled-adversary-emulation/`](controlled-adversary-emulation/) | Lab-only telemetry and artifact simulation for defensive validation |
-| 🧪 Sample Data | [`sample-data/`](sample-data/) | Sanitized lab samples and public-safe test data |
-| 📚 Documentation | [`docs/`](docs/) | Portfolio overview and safety scope |
+| Governance | [`governance/`](governance/) | Active canon, taxonomy, learning model and source authority |
+| Migration | [`migration/`](migration/) | Migration plan, acceptance gates and rollback rules |
+| Projects | [`projects/`](projects/) | P00–P20 technical manifests and scenarios |
+| Roles | [`roles/`](roles/) | R01–R26 role-module model |
+| Career | [`career/`](career/) | Career profiles and evidence-to-market mapping |
+| Orchestration | [`orchestration/`](orchestration/) | Controller, Core and six domain orchestrators |
+| Stack | [`stack/`](stack/) | Normalized product/component registry and version policy |
+| Detection Engineering | [`detection-engineering/`](detection-engineering/) | Detection content and validation assets |
+| Incident Response Automation | [`incident-response-automation/`](incident-response-automation/) | Investigation and response automation |
+| Infrastructure Security | [`infrastructure-security/`](infrastructure-security/) | Linux, Windows and network security modules |
+| Controlled LAB Emulation | [`controlled-adversary-emulation/`](controlled-adversary-emulation/) | LAB-only adversary scenarios and safe fixtures |
+| DevSecOps / Security QA | [`devsecops-security-qa/`](devsecops-security-qa/) | Delivery, testing and assurance assets |
+| Sample Data | [`sample-data/`](sample-data/) | Synthetic and sanitized fixtures |
+| Documentation | [`docs/`](docs/) | Architecture, ADR, portfolio and safety documentation |
 
-## Key Documents
+## Key documents
 
-- [`CHANGELOG.md`](CHANGELOG.md) — full repository development history
-- [`docs/portfolio_overview.md`](docs/portfolio_overview.md) — portfolio goals, target tracks, and evidence model
-- [`docs/safety_and_scope.md`](docs/safety_and_scope.md) — allowed scope, prohibited use, and artifact policy
-- [`controlled-adversary-emulation/docs/lab_scenarios.md`](controlled-adversary-emulation/docs/lab_scenarios.md) — explanation of lab-only emulation scripts
+- [`governance/ACTIVE_CANON.md`](governance/ACTIVE_CANON.md)
+- [`governance/program-taxonomy.yaml`](governance/program-taxonomy.yaml)
+- [`governance/learning-model.md`](governance/learning-model.md)
+- [`migration/2026-08-04-full-migration-plan.md`](migration/2026-08-04-full-migration-plan.md)
+- [`docs/architecture/adr/0002-program-v12-migration.md`](docs/architecture/adr/0002-program-v12-migration.md)
+- [`docs/p00/P00_CANON_V12.md`](docs/p00/P00_CANON_V12.md)
+- [`orchestration/README.md`](orchestration/README.md)
+- [`docs/portfolio_overview.md`](docs/portfolio_overview.md)
+- [`docs/safety_and_scope.md`](docs/safety_and_scope.md)
 
-## Current Learning Tracks
+## Evidence model
 
-- SOC / Detection Engineering
-- Security Automation
-- Incident Response Automation
-- Infrastructure Security
-- DevSecOps / AppSec / Security QA basics
+A completed project must produce:
 
-## Safety Notice
+- machine-readable run and evidence manifests;
+- human-readable execution, incident, recovery and assurance reports;
+- private raw evidence stored outside the public repository;
+- sanitized public-safe case studies and fixtures.
 
-All experiments are intended only for isolated lab networks, local virtual machines, owned systems, synthetic datasets, and sanitized sample data.
+Git, LAB execution, tests and evidence are the source of truth. A document or spreadsheet does not prove execution by itself.
 
-This repository must not contain real credentials, private keys, production logs, real intercepted traffic, personal data, or unauthorized access tooling.
+## Current status
+
+- v12 architecture: migrated to this branch;
+- P00 canonical design: migration candidate;
+- Controller and six orchestrators: designed, not implemented;
+- LAB execution: not started under v12;
+- Assurance PASS: not achieved;
+- source workbook: preserved externally and not overwritten.
+
+## Safety
+
+All experiments are restricted to owned systems, local virtual machines, isolated LAB networks and synthetic or sanitized data.
+
+Do not commit credentials, private keys, production logs, real intercepted traffic, malware samples, full packet captures, personal data or unsanitized evidence.
 
 ## Author
 

@@ -1,0 +1,48 @@
+api_version: ecp/v12
+kind: LabInventory
+metadata:
+  project_id: P00
+  environment: isolated-vmware
+  status: PLANNED
+
+network:
+  id: p00-isolated
+  cidr: 10.10.10.0/24
+  internet_access_during_scenario: false
+
+hosts:
+  analyst01:
+    address: 10.10.10.10
+    platform: linux
+    purpose:
+      - control
+      - testing
+      - investigation
+    allowed_services:
+      - ssh-client
+      - curl
+      - analysis-tools
+
+  web01:
+    address: 10.10.10.20
+    platform: ubuntu-server
+    purpose:
+      - nginx-service
+      - telemetry-source
+      - recovery-target
+    allowed_services:
+      - ssh
+      - nginx
+      - systemd
+      - journald
+
+ownership:
+  owned_by_user: true
+  third_party_assets: false
+  production_data: false
+  synthetic_or_lab_data_only: true
+
+recovery:
+  snapshot_before_execution: required
+  config_backup_before_change: required
+  restore_test: required
